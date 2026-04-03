@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Informations — Gold & Black</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Permanent+Marker&family=Montserrat:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-gradient: linear-gradient(135deg, #C9A84C 0%, #F5D376 50%, #C9A84C 100%);
+      --black: #0A0A0A;
+      --black-card: #0f0f0f;
+      --white: #F5F0E8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; cursor: none !important; }
+
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 2px solid #C9A84C;
+      background: rgba(201,168,76,0.15);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, background 0.2s;
+      will-change: transform;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* ---- TOPBAR ---- */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 72px;
+      background: rgba(8,8,8,0.97);
+      border-bottom: 1px solid rgba(201,168,76,0.18);
+      display: flex; align-items: center;
+      padding: 0 2.5rem;
+    }
+    .topbar-logo {
+      font-family: 'Black Ops One', sans-serif;
+      font-size: 1.4rem;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+    }
+    .topbar-back {
+      margin-left: auto;
+      display: flex; align-items: center; gap: 0.5rem;
+      color: rgba(201,168,76,0.75);
+      font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .topbar-back:hover { color: var(--gold); }
+    .topbar-back svg {
+      width: 14px; height: 14px;
+      stroke: currentColor; fill: none;
+      stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+      padding: 140px 2rem 5rem;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+      gap: 1.5rem;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: 72px; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(201,168,76,0.2), transparent);
+    }
+
+    .hero-label {
+      font-size: 0.65rem; letter-spacing: 0.45em; text-transform: uppercase;
+      color: rgba(201,168,76,0.5); font-weight: 700;
+    }
+    .hero-title {
+      font-family: 'Black Ops One', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      letter-spacing: 0.06em; line-height: 1;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sep {
+      width: 60px; height: 1px;
+      background: var(--gold-gradient);
+      margin: 0.5rem auto;
+    }
+    .hero-sub {
+      font-size: 0.85rem; font-weight: 400; font-style: italic;
+      color: rgba(245,240,232,0.4); letter-spacing: 0.08em;
+      max-width: 480px;
+    }
+
+    /* ---- ANIMATION ENTRÉE HERO ---- */
+    .hero {
+      opacity: 0;
+    }
+    .hero.animate-in {
+      animation: hero-rise 0.75s cubic-bezier(0.22,1.1,0.36,1) forwards;
+    }
+    @keyframes hero-rise {
+      from { opacity: 0; transform: translateY(80px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+    /* ---- CONTENU ---- */
+    .content {
+      max-width: 860px; width: 100%;
+      margin: 0 auto;
+      padding: 0 2rem 8rem;
+      display: flex; flex-direction: column;
+      gap: 0;
+    }
+
+    /* Chaque bloc paragraphe */
+    .block {
+      display: grid;
+      grid-template-columns: 3px 1fr;
+      gap: 0 2.5rem;
+      padding: 3rem 0;
+      border-bottom: 1px solid rgba(201,168,76,0.07);
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity 0.65s cubic-bezier(0.22,1.1,0.36,1), transform 0.65s cubic-bezier(0.22,1.1,0.36,1);
+    }
+    .block:last-child { border-bottom: none; }
+    .block.visible { opacity: 1; transform: translateY(0); }
+
+    /* Trait doré vertical */
+    .block-line {
+      width: 3px;
+      background: var(--gold-gradient);
+      border-radius: 2px;
+      flex-shrink: 0;
+      align-self: stretch;
+      min-height: 100%;
+    }
+
+    .block-body { display: flex; flex-direction: column; gap: 1rem; }
+
+    .block-num {
+      font-size: 0.58rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: rgba(201,168,76,0.35); font-weight: 700;
+    }
+
+    .block-text {
+      font-size: 1.05rem; line-height: 1.85; font-weight: 400;
+      color: rgba(245,240,232,0.82);
+    }
+
+    /* Mot(s) mis en valeur dans chaque paragraphe */
+    .block-text strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+    .block-text em {
+      color: var(--gold);
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    /* Citation finale */
+    .quote {
+      margin: 4rem auto 0;
+      max-width: 860px; width: 100%;
+      padding: 0 2rem;
+      text-align: center;
+      opacity: 0;
+    }
+    .quote.animate-in {
+      animation: quote-rise 0.75s cubic-bezier(0.22,1.1,0.36,1) forwards;
+    }
+    @keyframes quote-rise {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+    .quote-text {
+      font-family: 'Permanent Marker', cursive;
+      font-size: clamp(1.2rem, 3vw, 1.9rem);
+      background: var(--gold-gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.5;
+    }
+    .quote-sep {
+      width: 40px; height: 1px;
+      background: var(--gold-gradient);
+      margin: 1.5rem auto 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <a class="topbar-logo" href="index.html"><img src="image GB/Capture_d_écran_2026-04-04_010442-removebg-preview.png" alt="Gold & Black" style="height:60px;width:auto;display:block;filter:drop-shadow(0 0 8px rgba(201,168,76,0.4));" /></a>
+    <a class="topbar-back" href="index.html">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Retour
+    </a>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-label">À propos du salon</p>
+    <h1 class="hero-title">Gold &amp; Black</h1>
+    <div class="hero-sep"></div>
+    <p class="hero-sub">Goussainville — L'art de la coupe, l'excellence du style</p>
+  </section>
+
+  <!-- CONTENU -->
+  <div class="content">
+
+    <div class="block">
+      <div class="block-line"></div>
+      <div class="block-body">
+        <span class="block-num">01</span>
+        <p class="block-text">
+          Bienvenue chez <strong>Gold And Black Barber Shop</strong>, une adresse incontournable située à <em>Goussainville</em>, où l'exigence du détail rencontre l'élégance et le style.
+        </p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-line"></div>
+      <div class="block-body">
+        <span class="block-num">02</span>
+        <p class="block-text">
+          Ici, chaque prestation est pensée comme une <em>véritable expérience</em>. Notre équipe de barbers passionnés met à votre service un <strong>savoir-faire précis et actuel</strong>, afin de répondre à toutes vos attentes, des coupes classiques aux styles les plus tendance.
+        </p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-line"></div>
+      <div class="block-body">
+        <span class="block-num">03</span>
+        <p class="block-text">
+          Nous proposons une <em>large gamme de services</em> &nbsp;: coupe, coiffure, entretien de la barbe, locks, tresses et bien plus encore. Chaque technique est maîtrisée avec <strong>rigueur</strong> afin de garantir un résultat net et soigné.
+        </p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-line"></div>
+      <div class="block-body">
+        <span class="block-num">04</span>
+        <p class="block-text">
+          L'atmosphère du salon a été conçue pour vous offrir un <em>moment unique</em>. Entre ambiance chaleureuse, décoration soignée aux influences urbaines et touches élégantes, <strong>tout est réuni pour que vous vous sentiez à l'aise</strong> dès votre arrivée.
+        </p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-line"></div>
+      <div class="block-body">
+        <span class="block-num">05</span>
+        <p class="block-text">
+          Plus qu'un simple rendez-vous chez le coiffeur, Gold And Black Barber Shop vous propose une <em>véritable immersion</em>, où <strong>expérience, précision et professionnalisme</strong> sont les maîtres-mots.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CITATION FINALE -->
+  <div class="quote">
+    <p class="quote-text">"L'art de la coupe, l'excellence du style."</p>
+    <div class="quote-sep"></div>
+  </div>
+
+  <script>
+    var hero = document.querySelector('.hero');
+
+    // Animation d'entrée unique du hero
+    window.addEventListener('load', function(){
+      setTimeout(function(){
+        hero.classList.add('animate-in');
+        // Rendre tous les blocs et la citation visibles immédiatement
+        document.querySelectorAll('.block').forEach(function(el){
+          el.classList.add('visible');
+        });
+        var quote = document.querySelector('.quote');
+        if (quote) quote.classList.add('animate-in');
+      }, 350);
+    });
+  </script>
+
+  <!-- TRANSITION -->
+  <div id="page-transition"></div>
+  <style>
+    #page-transition {
+      position: fixed; inset: 0; z-index: 99999;
+      background: #0A0A0A;
+      pointer-events: none;
+      animation: gb-reveal 0.65s cubic-bezier(0.76,0,0.24,1) forwards;
+    }
+    #page-transition::after {
+      content: '';
+      position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+      background: linear-gradient(to right, transparent 0%, #8B6914 15%, #C9A84C 35%, #F5D376 50%, #C9A84C 65%, #8B6914 85%, transparent 100%);
+      box-shadow: 0 0 30px rgba(201,168,76,0.8), 0 0 80px rgba(201,168,76,0.4);
+    }
+    @keyframes gb-reveal { from { transform: translateY(0);    } to { transform: translateY(-100%); } }
+    @keyframes gb-cover  { from { transform: translateY(100%); } to { transform: translateY(0);     } }
+    #page-transition.is-leaving {
+      animation: gb-cover 0.5s cubic-bezier(0.76,0,0.24,1) forwards;
+      pointer-events: all;
+    }
+  </style>
+  <script>
+    (function(){
+      var overlay = document.getElementById('page-transition');
+      document.addEventListener('click', function(e){
+        var link = e.target.closest('a[href]');
+        if (!link) return;
+        var href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || href.startsWith('tel')) return;
+        e.preventDefault();
+        overlay.classList.add('is-leaving');
+        overlay.addEventListener('animationend', function(){ window.location.href = href; }, { once: true });
+      });
+    })();
+  </script>
+
+  <div id="cursor-ring" class="cursor-ring"></div>
+  <script>
+    (function(){
+      var ring = document.getElementById('cursor-ring');
+      document.addEventListener('mousemove', function(e){
+        ring.style.transform = 'translate(' + (e.clientX - 18) + 'px, ' + (e.clientY - 18) + 'px)';
+      });
+      document.querySelectorAll('a, button').forEach(function(el){
+        el.addEventListener('mouseenter', function(){ ring.style.width='52px'; ring.style.height='52px'; ring.style.background='rgba(201,168,76,0.25)'; });
+        el.addEventListener('mouseleave', function(){ ring.style.width='36px'; ring.style.height='36px'; ring.style.background='rgba(201,168,76,0.15)'; });
+      });
+    })();
+  </script>
+
+</body>
+</html>
